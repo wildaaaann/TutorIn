@@ -57,4 +57,6 @@ Backend: http://localhost:5000
 ### 📜 Lisensi
 - Proyek ini dapat digunakan secara bebas untuk keperluan pembelajaran dan pengembangan.
 
+---
+
 
