@@ -7,6 +7,7 @@ Sebuah platform web untuk mempertemukan siswa dan tutor secara online.
 - Pencarian tutor
 - Booking sesi belajar
 - Notifikasi via email
+- Games
 
 ## Tampilan Aplikasi
 ![screenshot](/Dashboard)
