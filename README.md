@@ -14,6 +14,4 @@ Sebuah platform web untuk mempertemukan siswa dan tutor secara online.
 ## Cara Menjalankan
 ### Frontend
 ```bash
-cd frontend
-npm install
-npm run dev
+https://wildaaaann.github.io/TutorIn/
