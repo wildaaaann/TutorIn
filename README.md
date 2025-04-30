@@ -9,9 +9,8 @@ Sebuah platform web untuk mempertemukan siswa dan tutor secara online.
 - Notifikasi via email
 
 ## Tampilan Aplikasi
-![screenshot](path/to/screenshot.png)
+![screenshot](/Dashboard)
 
 ## Cara Menjalankan
-### Frontend
 ```bash
 https://wildaaaann.github.io/TutorIn/
