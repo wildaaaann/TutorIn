@@ -24,10 +24,6 @@ TutorIn adalah aplikasi web yang mempertemukan siswa dengan tutor secara online.
 
 ---
 
-### 🔧 Prasyarat
-
-- Docker dan Docker Compose sudah terinstal di komputer
-
 ### ▶️ Jalankan Aplikasi
 
 ```bash
