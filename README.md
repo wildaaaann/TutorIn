@@ -17,7 +17,7 @@ TutorIn adalah aplikasi web yang mempertemukan siswa dengan tutor secara online.
 
 ## 🖼️ Tampilan Aplikasi
 
-> ![TutorIn Screenshot](./dashboard.png)
+> ![TutorIn Screenshot](./Dashboard.png)
 
 ---
 
