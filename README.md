@@ -10,7 +10,6 @@ TutorIn adalah aplikasi web yang mempertemukan siswa dengan tutor secara online.
 - 🧑‍🏫 Profil tutor dan pencarian berdasarkan bidang
 - 📅 Booking sesi belajar
 - 💬 Notifikasi email (opsional)
-- 📦 Deploy dengan Docker
 - 🎮 Games
 
 ---
