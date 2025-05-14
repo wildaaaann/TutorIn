@@ -10,6 +10,12 @@ body.dark-mode {
     color: #F3F4F6; /* Gray-100 */
 }
 
+.calendar div:nth-child(-n+7) {
+border-bottom: 1px solid #ccc; /* Warna garis */
+padding-bottom: 4px;
+margin-bottom: 4px;
+}
+
 .bg-white {
     background-color: #FFFFFF; /* White */
 }
