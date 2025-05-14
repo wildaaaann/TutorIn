@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const body = document.body;
 
     // Mode gelap/terang
-    if (localStorage.getItem('theme') === 'light') {
+    if (localStorage.getItem('theme') === 'dark') {
         body.classList.add('dark-mode');
         modeToggle.checked = true;
     }
