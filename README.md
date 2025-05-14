@@ -31,19 +31,7 @@ TutorIn adalah aplikasi web yang mempertemukan siswa dengan tutor secara online.
 ### ▶️ Jalankan Aplikasi
 
 ```bash
-docker-compose up --build
-```
-
----
-
-### 🔍 File docker-compose.yml mengatur:
-- Frontend pada port 3000
-```bash
-Frontend: http://localhost:3000
-```
-- Backend pada port 5000
-```bash
-Backend: http://localhost:5000
+https://wildaaaann.github.io/TutorIn/
 ```
 
 ---
