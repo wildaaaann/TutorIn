@@ -282,3 +282,10 @@ body {
 .text-green-500 {
     color: #10B981; /* Green-500 */
 }
+
+#profile-menu {
+  position: absolute; /* Ensure the dropdown is positioned absolutely */
+  top: 100%; /* Position it below the profile picture */
+  right: 0; /* Align it to the right */
+  z-index: 50; /* Ensure it appears above other elements */
+}
