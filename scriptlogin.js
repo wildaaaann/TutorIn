@@ -8,7 +8,7 @@ function validateLogin(event) {
     const errorMsg = document.getElementById('error');
 
     // Check if the credentials are correct
-    if (username === 'admin' && password === 'admin1') {
+    if (username === 'eko purnawan' && password === 'eko123') {
         // Set a flag in local storage to indicate the user is logged in
         localStorage.setItem('isLoggedIn', 'true');
         // Redirect to the dashboard or another page
