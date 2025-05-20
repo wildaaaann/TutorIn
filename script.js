@@ -138,3 +138,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const profileMenuButton = document.getElementById('profile-menu-button');
+    const profileMenu = document.getElementById('profile-menu');
+    profileMenuButton.addEventListener('click', function () {
+        profileMenu.classList.toggle('hidden');
+    });
+    // Close the dropdown if clicked outside
+    window.addEventListener('click', function (event) {
+        if (!profileMenuButton.contains(event.target) && !profileMenu.contains(event.target)) {
+            profileMenu.classList.add('hidden');
+        }
+    });
+});
