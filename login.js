@@ -10,7 +10,7 @@ function validateLogin(event) {
     if (username === 'admin' && password === 'admin1') {
         alert('Login successful!');
         // Redirect to the dashboard or another page
-        window.location.href = 'dashboard.html'; // Change this to your dashboard page
+        window.location.href = 'index.html'; // Change this to your dashboard page
     } else {
         alert('Invalid username or password. Please try again.');
     }
