@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Games - Time Attack</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="stylegame.css">
+</head>
+<body class="bg-gray-100 dark:bg-gray-800">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-64 bg-white dark:bg-gray-900 border-r dark:border-gray-700">
+      <div class="p-4">
+        <h1 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">TutorIn</h1>
+        <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Indonesia's #1 Mentoring Course</h2>
+      </div>
+      <nav class="px-4">
+        <ul class="space-y-3">
+          <li>
+            <a class="flex items-center p-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" href="dashboard.html">
+              <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Dark Mode</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="mode-toggle" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+      </nav>
+    </div>
+    
+    <!-- Main Game Content -->
+    <div class="flex-1 overflow-auto p-6">
+      <div class="max-w-4xl mx-auto">
+        <!-- Game Header -->
+        <div class="flex justify-between items-center mb-6">
+          <h1 class="text-3xl font-bold text-blue-600 dark:text-blue-400">Time Attack Challenge</h1>
+          <div class="flex items-center space-x-4">
+            <div class="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-lg">
+              Score: <span id="score" class="font-bold">0</span>
+            </div>
+            <div class="bg-red-500 text-white px-4 py-2 rounded-lg">
+              Time: <span id="timer" class="font-bold">30</span>s
+            </div>
+          </div>
+        </div>
+        
+        <!-- Progress -->
+        <div class="mb-6">
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-700 dark:text-gray-300">
+              Question <span id="current-question">1</span> of <span id="total-questions">5</span>
+            </span>
+            <span id="time-bonus" class="text-green-600 dark:text-green-400 font-medium">+0 bonus</span>
+          </div>
+          <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+            <div id="progress" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+        
+        <!-- Question Box -->
+        <div class="kahoot-theme p-6 rounded-xl shadow-lg mb-8">
+          <h2 id="question" class="text-3xl font-bold text-center text-white"></h2>
+        </div>
+        
+        <!-- Answers Grid -->
+        <div id="answers" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div>
+        
+        <!-- Next Button -->
+        <button id="next-button" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition hidden">
+          Next Question <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Result Modal -->
+  <div id="result-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full shadow-2xl">
+      <div class="text-center">
+        <div class="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-4">Game Over!</div>
+        <div class="text-2xl mb-2">Your Score:</div>
+        <div id="final-score" class="text-5xl font-bold text-green-600 dark:text-green-400 mb-6">0</div>
+        <div id="performance-comment" class="text-lg text-gray-700 dark:text-gray-300 mb-6">Good effort!</div>
+        <button id="restart-button" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition">
+          Play Again <i class="fas fa-redo ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="scriptgame.js"></script>
+</body>
+</html>
