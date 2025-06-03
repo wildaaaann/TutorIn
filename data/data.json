@@ -1,0 +1,46 @@
+{
+    "onTrack": 215,
+    "needReminder": 26,
+    "learnerReactions": {
+        "frown": 0,
+        "meh": 32,
+        "smile": 86,
+        "laugh": 144
+    },
+    "satisfactionRate": 85,
+    "learnerProgress": [
+        {
+            "name": "Budi Santoso",
+            "progress": 43
+        },
+        {
+            "name": "Andi Wijaya",
+            "progress": 13
+        },
+        {
+            "name": "Rina Sari",
+            "progress": 3
+        }
+    ],
+    "longestWaitingReviews": [
+        {
+            "name": "Rina Sari",
+            "timeAgo": "a month ago",
+            "course": "Soal Matematika 2"
+        },
+        {
+            "name": "Budi Santoso",
+            "timeAgo": "a day ago",
+            "course": "Soal Bahasa Indonesia 1"
+        }
+    ],
+    "qaSession": {
+        "time": "03:00 PM - 05:00 PM",
+        "description": "Join our Q&A session to get answers to your questions and insights from our experienced mentors. Topics include:",
+        "topics": [
+            "Advanced Google Analytics techniques",
+            "Real-world case studies",
+            "Best practices for data analysis"
+        ]
+    }
+}
