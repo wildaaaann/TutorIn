@@ -1,0 +1,168 @@
+:root {
+    --primary-color: #ffffff;
+    --secondary-color: #1E293B;
+    --accent-color: #60A5FA;
+    --text-color: #F1F5F9;
+    --bg-color: #0F172A;
+    --font-family: 'Inter', sans-serif;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+}
+
+body {
+    margin: 0;
+    background-color: var(--secondary-color);
+    font-family: var(--font-family);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 960px;
+    margin: 2rem auto;
+    background-color: var(--bg-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    letter-spacing: 0.05em;
+}
+
+.instructor {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.instructor img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-color);
+}
+
+.description {
+    margin: 2rem 0;
+    font-size: 1.1rem;
+    color: #d3d3d3;
+    text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progress-bar {
+    background: #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 20px;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary-color);
+    transition: width 0.4s ease-in-out;
+}
+
+.progress-text {
+    text-align: right;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    user-select: none;
+}
+
+ul.lessons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.lessons li {
+    background: var(--secondary-color);
+    margin-bottom: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    transition: background var(--transition-speed);
+    user-select: none;
+}
+
+ul.lessons li.completed {
+    background: #d4f8e8;
+    color: #25714f;
+    text-decoration: line-through;
+}
+
+ul.lessons li:hover {
+    background: #e1efff;
+}
+
+ul.lessons li .lesson-title {
+    flex-grow: 1;
+}
+
+ul.lessons li .lesson-status {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+button.enroll-btn {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    font-size: 1.25rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    display: block;
+    margin: 2rem auto 0;
+    box-shadow: 0 4px 10px rgba(255, 127, 80, 0.4);
+    transition: background-color var(--transition-speed);
+    user-select: none;
+}
+
+button.enroll-btn:hover {
+    background-color: #ff6333;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    header h1 {
+    font-size: 1.8rem;
+    }
+
+    .description {
+    font-size: 1rem;
+    padding: 0 1rem;
+    }
+
+    button.enroll-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    }
+}
