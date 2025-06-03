@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Courses</title>
+  <link rel="stylesheet" href="../css/booking.css">
+  <script src="../js/booking.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>Book your class</h1>
+      <div class="instructor">
+        <img src="https://storage.googleapis.com/a1aa/image/5KIxFQEVMYgTWMsvY2Wnw_02pgT-MJfNmNSqW9HfgZI.jpg" alt="Instructor Photo" />
+        <span>Eko Purnawan</span>
+      </div>
+    </header>
+
+    <section class="description">
+      <p>
+        Choose your class That you want
+      </p>
+    </section>
+
+    <section class="progress">
+      <div class="progress-text" id="progressText">Progress: 0%</div>
+      <div class="progress-bar" aria-label="Course progress">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </section>
+
+    <ul class="lessons" id="lessonList">
+      <li data-completed="false">
+        <span class="lesson-title">Matematika</span>
+        <span class="lesson-status">Not Completed</span>
+      </li>
+      <li data-completed="false">
+        <span class="lesson-title">IPA</span>
+        <span class="lesson-status">Not Completed</span>
+      </li>
+      <li data-completed="false">
+        <span class="lesson-title">Bahasa Indonesia</span>
+        <span class="lesson-status">Not Completed</span>
+      </li>
+      <li data-completed="false">
+        <span class="lesson-title">English</span>
+        <span class="lesson-status">Not Completed</span>
+      </li>
+      <li data-completed="false">
+        <span class="lesson-title">IPS</span>
+        <span class="lesson-status">Not Completed</span>
+      </li>
+    </ul>
+
+    <button class="enroll-btn" id="enrollBtn">Enroll Now</button>
+  </main>
+</body>
+</html>
+
