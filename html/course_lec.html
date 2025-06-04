@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TutorIn - Course List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        /* Base styles for light mode */
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* gray-100 for light mode body (default) */
+            color: #1f2937; /* gray-800 for light mode body text (default) */
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            display: flex; /* Ensure flex for full height layout */
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+
+        /* Dark mode specific styles */
+        html.dark body {
+            background-color: #1e293b; /* slate-800 for dark mode body */
+            color: #f1f5f9; /* slate-100 for dark mode body text */
+        }
+
+        /* Sidebar styles - mostly Tailwind, but custom for specific elements */
+        aside {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        aside .p-4 h1 {
+            color: #2563eb; /* blue-600 */
+        }
+        html.dark aside .p-4 h1 {
+            color: #38bdf8; /* sky-400 */
+        }
+        aside .p-4 h2 {
+            color: #4b5563; /* gray-600 */
+        }
+        html.dark aside .p-4 h2 {
+            color: #94a3b8; /* slate-400 */
+        }
+        aside nav a {
+            color: #374151; /* gray-700 */
+        }
+        html.dark aside nav a {
+            color: #cbd5e1; /* slate-300 */
+        }
+        aside nav a:hover {
+            color: #2563eb; /* blue-600 */
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        html.dark aside nav a:hover {
+            color: #38bdf8; /* sky-400 */
+            background-color: #1e293b; /* slate-800 */
+        }
+        aside nav i {
+            color: #6b7280; /* gray-500 */
+        }
+        html.dark aside nav i {
+            color: #94a3b8; /* slate-400 */
+        }
+        aside .p-3 {
+            background-color: #f9fafb; /* gray-50 */
+        }
+        html.dark aside .p-3 {
+            background-color: #1e293b; /* slate-800 */
+        }
+        aside .p-3 span {
+            color: #374151; /* gray-700 */
+        }
+        html.dark aside .p-3 span {
+            color: #cbd5e1; /* slate-300 */
+        }
+
+        /* Main content area (where the course list will be) */
+        .main-content-area {
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 1.5rem; /* Adjusted padding */
+            background-color: #f3f4f6; /* gray-100 */
+            transition: background-color 0.3s ease;
+            display: flex; /* Use flex to center the container */
+            justify-content: center;
+            align-items: flex-start; /* Align to top, not center vertically */
+            padding-top: 3rem; /* Add top padding to main content area */
+        }
+        html.dark .main-content-area {
+            background-color: #1e293b; /* slate-800 */
+        }
+
+        /* Course List Container (from second HTML) */
+        .course-container {
+            background: #ffffff; /* white */
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            width: 480px;
+            font-size: 1.125rem;
+            color: #1f2937; /* gray-800 */
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e5e7eb; /* Subtle border */
+        }
+        html.dark .course-container {
+            background: #334155; /* slate-700 */
+            color: #f1f5f9; /* slate-100 */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Softer shadow */
+            border: 1px solid #475569; /* Subtle border */
+        }
+
+        .course-container h1 {
+            color: #2563eb; /* blue-600 */
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+        }
+        html.dark .course-container h1 {
+            color: #38bdf8; /* sky-400 */
+        }
+
+        ul.course-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li.course-item {
+            background: #ffffff; /* white */
+            margin-bottom: 1.2rem;
+            padding: 1.25rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04); /* Softer shadow */
+            border: 1px solid #e5e7eb; /* Subtle border */
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        html.dark li.course-item {
+            background: #475569; /* slate-600 */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            border: 1px solid #475569; /* Subtle border */
+        }
+
+        li.course-item:hover {
+            background: #f0f4f8; /* light-blue-50 for subtle hover */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Slightly more pronounced shadow on hover */
+            border-color: #93c5fd; /* blue-300 on hover */
+        }
+        html.dark li.course-item:hover {
+            background: #525f76; /* slightly darker slate-600 */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Slightly more pronounced shadow on hover */
+            border-color: #7dd3fc; /* sky-300 on hover */
+        }
+
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600; /* Slightly less bold */
+            color: #1f2937; /* gray-800 */
+            font-size: 1.15rem;
+        }
+        html.dark .course-header {
+            color: #f1f5f9; /* slate-100 */
+        }
+
+        .units {
+            background: #2563eb; /* blue-600 */
+            color: white;
+            border-radius: 9999px; /* Fully rounded */
+            padding: 0.3rem 0.8rem; /* Slightly reduced padding */
+            font-size: 0.9rem; /* Slightly smaller font */
+            min-width: 2.5rem; /* Adjusted min-width */
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            font-weight: 500; /* Lighter weight */
+        }
+        html.dark .units {
+            background: #38bdf8; /* sky-400 */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Softer shadow */
+        }
+
+        ul.units-list {
+            margin-top: 1rem;
+            margin-left: 1.2rem;
+            padding-left: 1.2rem;
+            border-left: 3px solid #60a5fa; /* blue-400 for a softer line */
+            list-style-type: disc;
+            display: none;
+            color: #6b7280; /* gray-500 */
+            font-weight: 400; /* Normal weight */
+            font-size: 0.95rem; /* Slightly smaller */
+        }
+        html.dark ul.units-list {
+            border-left: 3px solid #7dd3fc; /* sky-300 for a softer line */
+            color: #94a3b8; /* slate-400 */
+        }
+
+        ul.units-list.show {
+            display: block;
+        }
+
+        ul.units-list li {
+            margin: 0.4rem 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .course-container {
+                width: 90%;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content-area {
+                padding-top: 1.5rem; /* Reduce top padding on smaller screens */
+            }
+            .course-container {
+                padding: 1.5rem 1rem;
+                font-size: 1rem;
+            }
+            .course-container h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            li.course-item {
+                padding: 1rem 1.25rem;
+                margin-bottom: 1rem;
+            }
+            .course-header {
+                font-size: 1rem;
+            }
+            .units {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            ul.units-list {
+                margin-left: 0.8rem;
+                padding-left: 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flex h-screen w-full">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-700 flex flex-col transition-colors duration-300 ease-in-out">
+            <div class="p-4">
+                <h1 class="text-2xl font-bold mb-1">TutorIn</h1>
+                <h2 class="text-xs font-semibold">Indonesia's #1 Mentoring Course</h2>
+            </div>
+            <nav class="px-4 flex-1 space-y-2">
+                <a class="flex items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800" href="dashboard_lec.html">
+                    <i class="fas fa-tachometer-alt mr-3 w-5 h-5 text-center"></i>
+                    <span>Dashboard</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-200 dark:border-slate-700 transition-colors duration-300 ease-in-out">
+                <div class="p-3 rounded-lg transition-colors duration-300 ease-in-out">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-medium">Dark Mode</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="mode-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-sky-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-slate-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 dark:peer-checked:bg-sky-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main-content-area">
+            <div class="course-container" role="region" aria-label="Course list container">
+                <h1>Courses</h1>
+                <ul class="course-list">
+                    <li class="course-item" data-course="mathematics" tabindex="0" aria-expanded="false" aria-controls="units-math" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Mathematics</span>
+                            <span class="units">3</span>
+                        </div>
+                        <ul class="units-list" id="units-math" role="group" aria-label="Mathematics units">
+                            <li>Algebra</li>
+                            <li>Geometry</li>
+                            <li>Calculus</li>
+                        </ul>
+                    </li>
+                    <li class="course-item" data-course="indonesian" tabindex="0" aria-expanded="false" aria-controls="units-indo" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Indonesian</span>
+                            <span class="units">2</span>
+                        </div>
+                        <ul class="units-list" id="units-indo" role="group" aria-label="Indonesian units">
+                            <li>Grammar</li>
+                            <li>Composition</li>
+                        </ul>
+                    </li>
+                    <li class="course-item" data-course="english" tabindex="0" aria-expanded="false" aria-controls="units-eng" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>English</span>
+                            <span class="units">3</span>
+                        </div>
+                        <ul class="units-list" id="units-eng" role="group" aria-label="English units">
+                            <li>Reading</li>
+                            <li>Writing</li>
+                            <li>Speaking</li>
+                        </ul>
+                    </li>
+                     <li class="course-item" data-course="biology" tabindex="0" aria-expanded="false" aria-controls="units-bio" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Biology</span>
+                            <span class="units">2</span>
+                        </div>
+                        <ul class="units-list" id="units-bio" role="group" aria-label="Biology units">
+                            <li>Cell Biology</li>
+                            <li>Genetics</li>
+                        </ul>
+                    </li>
+                     <li class="course-item" data-course="physics" tabindex="0" aria-expanded="false" aria-controls="units-phy" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Physics</span>
+                            <span class="units">3</span>
+                        </div>
+                        <ul class="units-list" id="units-phy" role="group" aria-label="Physics units">
+                            <li>Mechanics</li>
+                            <li>Thermodynamics</li>
+                            <li>Electromagnetism</li>
+                        </ul>
+                    </li>
+                     <li class="course-item" data-course="chemistry" tabindex="0" aria-expanded="false" aria-controls="units-chem" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Chemistry</span>
+                            <span class="units">2</span>
+                        </div>
+                        <ul class="units-list" id="units-chem" role="group" aria-label="Chemistry units">
+                            <li>Organic Chemistry</li>
+                            <li>Inorganic Chemistry</li>
+                        </ul>
+                    </li>
+                     <li class="course-item" data-course="history" tabindex="0" aria-expanded="false" aria-controls="units-hist" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>History</span>
+                            <span class="units">2</span>
+                        </div>
+                        <ul class="units-list" id="units-hist" role="group" aria-label="History units">
+                            <li>Ancient Civilizations</li>
+                            <li>Modern History</li>
+                        </ul>
+                    </li>
+                     <li class="course-item" data-course="geography" tabindex="0" aria-expanded="false" aria-controls="units-geo" aria-haspopup="true">
+                        <div class="course-header">
+                            <span>Geography</span>
+                            <span class="units">2</span>
+                        </div>
+                        <ul class="units-list" id="units-geo" role="group" aria-label="Geography units">
+                            <li>Physical Geography</li>
+                            <li>Human Geography</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dark mode toggle functionality
+            const modeToggle = document.getElementById('mode-toggle');
+            const htmlElement = document.documentElement;
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    htmlElement.classList.add('dark');
+                    if(modeToggle) modeToggle.checked = true;
+                } else {
+                    htmlElement.classList.remove('dark');
+                    if(modeToggle) modeToggle.checked = false;
+                }
+            }
+
+            if (modeToggle) {
+                modeToggle.addEventListener('change', () => {
+                    const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    applyTheme(newTheme);
+                });
+
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    applyTheme(savedTheme);
+                } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    applyTheme('dark');
+                } else {
+                    applyTheme('light');
+                }
+            } else {
+                // Fallback or default theme if toggle is not present
+                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    applyTheme('dark');
+                } else {
+                    applyTheme('light');
+                }
+            }
+
+            // Course list toggle functionality
+            document.querySelectorAll('.course-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const unitsList = item.querySelector('.units-list');
+                    const isShown = unitsList.classList.contains('show');
+                    // Hide other opened units lists
+                    document.querySelectorAll('.units-list.show').forEach(openList => {
+                        if(openList !== unitsList) {
+                            openList.classList.remove('show');
+                            openList.parentElement.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                    if (!isShown) {
+                        unitsList.classList.add('show');
+                        item.setAttribute('aria-expanded', 'true');
+                    } else {
+                        unitsList.classList.remove('show');
+                        item.setAttribute('aria-expanded', 'false');
+                    }
+                });
+                item.addEventListener('keydown', e => {
+                    if(e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        item.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
