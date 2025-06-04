@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Scoring</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    html.dark body {
+        background-color: #1e293b; /* slate-800 for dark mode */
+        color: #f1f5f9; /* slate-100 for dark mode */
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6; /* gray-100 for light mode (default) */
+      color: #1f2937; /* gray-800 for light mode (default) */
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    /* This will be the main content block for the table */
+    .content-container {
+      max-width: 960px;
+      margin: 2rem auto;
+      background: #ffffff; /* white for light mode */
+      color: #1f2937; /* gray-800 for light mode */
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.1); 
+      padding: 1.5rem 2rem;
+    }
+    html.dark .content-container {
+      background: #334155; /* slate-700 for dark mode */
+      color: #f1f5f9; /* slate-100 for dark mode */
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.2);
+    }
+    .content-container h2 { 
+      color: #111827; /* gray-900 for light mode */
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    html.dark .content-container h2 {
+      color: #e2e8f0; /* slate-200 for dark mode */
+    }
+    .search-box {
+      margin-bottom: 1.5rem; 
+      display: flex;
+      justify-content: flex-end;
+    }
+    .search-box input {
+      padding: 0.6rem 1rem; 
+      font-size: 1rem;
+      border-radius: 6px; 
+      border: 1.5px solid #d1d5db; /* gray-300 for light mode */
+      background-color: #ffffff; /* white for light mode */
+      color: #1f2937; /* gray-800 for light mode */
+      width: 250px; 
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    html.dark .search-box input {
+      border: 1.5px solid #475569; /* slate-600 border for dark */
+      background-color: #1e293b; /* slate-800 bg for dark */
+      color: #f1f5f9; /* slate-100 text for dark */
+    }
+    .search-box input::placeholder {
+      color: #9ca3af; /* gray-400 for light */
+    }
+    html.dark .search-box input::placeholder {
+      color: #94a3b8; /* slate-400 placeholder for dark */
+    }
+    .search-box input:focus {
+      outline: none;
+      border-color: #3b82f6; /* blue-500 for light */
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); 
+    }
+    html.dark .search-box input:focus {
+      border-color: #38bdf8; /* sky-500 for dark */
+      box-shadow: 0 0 0 3px #38bdf866; 
+    }
+    table#scoreTable { 
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    table#scoreTable thead {
+      background: #e5e7eb; /* gray-200 for light */
+    }
+    html.dark table#scoreTable thead {
+      background: #475569; /* slate-600 for dark */
+    }
+    table#scoreTable th, table#scoreTable td {
+      padding: 0.85rem 1rem; 
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb; /* gray-200 for light */
+    }
+    html.dark table#scoreTable th, html.dark table#scoreTable td {
+      border-bottom: 1px solid #475569; /* slate-600 for dark */
+    }
+    table#scoreTable th {
+      font-weight: 600;
+      color: #374151; /* gray-700 for light */
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+    }
+    html.dark table#scoreTable th {
+      color: #e2e8f0; /* slate-200 for dark */
+    }
+    table#scoreTable th:hover {
+      background: #d1d5db; /* gray-300 for light */
+    }
+    html.dark table#scoreTable th:hover {
+      background: #525f76; /* slate-600/700 for dark */
+    }
+    table#scoreTable th .sort-arrow {
+      font-size: 0.8rem; 
+      margin-left: 0.35rem;
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    table#scoreTable th .sort-arrow { visibility: hidden; } 
+    table#scoreTable th.sort-asc .sort-arrow,
+    table#scoreTable th.sort-desc .sort-arrow {
+      visibility: visible;
+    }
+    table#scoreTable tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    table#scoreTable tbody tr:hover {
+      background: #f3f4f6; /* gray-100 for light */
+    }
+    html.dark table#scoreTable tbody tr:hover {
+      background: #3e4c5f; /* slate-700 for dark */
+    }
+    table#scoreTable tbody td {
+      color: #374151; /* gray-700 for light */
+    }
+    html.dark table#scoreTable tbody td {
+      color: #cbd5e1; /* slate-300 for dark */
+    }
+    .score-pass {
+      color: #16a34a; /* green-600 for light */
+      font-weight: 600;
+    }
+    html.dark .score-pass {
+      color: #4ade80; /* green-400 for dark */
+    }
+    .score-fail {
+      color: #dc2626; /* red-600 for light */
+      font-weight: 600;
+    }
+    html.dark .score-fail {
+      color: #f87171; /* red-400 for dark */
+    }
+    .submit-button-container {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .action-button { 
+      background-color: #2563eb; /* blue-600 for light */
+      color: #ffffff; 
+      padding: 0.7rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600; 
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    html.dark .action-button {
+      background-color: #38bdf8; /* sky-500 for dark */
+      color: #0f172a; 
+    }
+    .action-button:hover {
+      background-color: #1d4ed8; /* blue-700 for light */
+    }
+    html.dark .action-button:hover {
+      background-color: #0ea5e9; /* sky-600 for dark */
+    }
+    .action-button:active {
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 768px) { 
+      .content-container { 
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .search-box {
+        justify-content: stretch; 
+      }
+      .search-box input {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) { 
+      table#scoreTable, table#scoreTable thead, table#scoreTable tbody, table#scoreTable th, table#scoreTable td, table#scoreTable tr { 
+        display: block; 
+      }
+      table#scoreTable thead tr {
+        display: none; 
+      }
+      table#scoreTable tbody tr {
+        margin-bottom: 1.25rem;
+        background: #ffffff; /* white for light */
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+        border: 1px solid #e5e7eb; /* gray-200 for light */
+      }
+      html.dark table#scoreTable tbody tr {
+        background: #3e4c5f; 
+        border: 1px solid #475569; 
+      }
+      table#scoreTable tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0; 
+        border-bottom: 1px dashed #e5e7eb; /* gray-200 for light */
+        font-size: 0.9rem;
+      }
+      html.dark table#scoreTable tbody td {
+        border-bottom: 1px dashed #475569; 
+      }
+      table#scoreTable tbody tr td:last-child {
+        border-bottom: none; 
+      }
+      table#scoreTable tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #6b7280; /* gray-500 for light */
+      }
+      html.dark table#scoreTable tbody td::before {
+        color: #94a3b8; /* slate-400 for dark */
+        margin-right: 0.5rem; 
+      }
+      .submit-button-container {
+        justify-content: stretch;
+      }
+      .action-button {
+        width: 100%;
+        padding: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body> 
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-700 flex flex-col transition-colors duration-300 ease-in-out">
+      <div class="p-4">
+        <h1 class="text-2xl font-bold mb-1 text-blue-600 dark:text-sky-400">TutorIn</h1>
+        <h2 class="text-xs font-semibold text-gray-600 dark:text-slate-400">Indonesia's #1 Mentoring Course</h2>
+      </div>
+      <nav class="px-4 flex-1 space-y-2">
+          <a class="flex items-center p-2 text-gray-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-sky-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800" href="dashboard.html">
+            <i class="fas fa-tachometer-alt mr-3 w-5 h-5 text-center text-gray-500 dark:text-slate-400"></i>
+            <span>Dashboard</span>
+          </a>
+      </nav>
+      <div class="p-4 border-t border-gray-200 dark:border-slate-700 transition-colors duration-300 ease-in-out">
+        <div class="p-3 bg-gray-50 dark:bg-slate-800 rounded-lg transition-colors duration-300 ease-in-out">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Dark Mode</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="mode-toggle" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-sky-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-slate-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 dark:peer-checked:bg-sky-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- Scrollable content area -->
+      <div class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 bg-gray-100 dark:bg-slate-800 transition-colors duration-300 ease-in-out">
+        <main class="content-container">
+            <h2>Scoring Students - LEC001</h2>
+            <div class="search-box">
+              <input type="text" id="searchInput" placeholder="Search by student name..." aria-label="Search student">
+            </div>
+            <table id="scoreTable" aria-label="Student scoring table">
+              <thead>
+                <tr>
+                  <th data-sort-key="name">Student<span class="sort-arrow"></span></th>
+                  <th data-sort-key="assignment1">Assignment 1<span class="sort-arrow"></span></th>
+                  <th data-sort-key="assignment2">Assignment 2<span class="sort-arrow"></span></th>
+                  <th data-sort-key="midterm">Midterm<span class="sort-arrow"></span></th>
+                  <th data-sort-key="final">Final Exam<span class="sort-arrow"></span></th>
+                  <th data-sort-key="average">Average<span class="sort-arrow"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+            <div class="submit-button-container">
+                <button type="button" class="action-button">Submit Score</button>
+            </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Data for the scoring table
+    const students = [
+      { name: "Arif Rahman", assignment1: 88, assignment2: 92, midterm: 78, final: 85 },
+      { name: "Budi Santoso", assignment1: 67, assignment2: 70, midterm: 72, final: 68 },
+      { name: "Rina Sari", assignment1: 94, assignment2: 90, midterm: 89, final: 93 },
+      { name: "Dwi Setiawan", assignment1: 75, assignment2: 80, midterm: 70, final: 72 },
+      { name: "Eka Sari", assignment1: 58, assignment2: 65, midterm: 60, final: 55 },
+      { name: "Fikri Ramadhan", assignment1: 82, assignment2: 85, midterm: 84, final: 80 },
+      { name: "Eko Purnawan", assignment1: 90, assignment2: 94, midterm: 92, final: 97 },
+      { name: "Hendra Kusuma", assignment1: 45, assignment2: 50, midterm: 40, final: 42 }
+    ];
+
+    const tableBody = document.querySelector("#scoreTable tbody");
+    const searchInput = document.getElementById("searchInput");
+    const headers = document.querySelectorAll("#scoreTable thead th");
+
+    let sortKey = "name"; 
+    let sortDirection = "asc"; 
+
+    function calculateAverage(student) {
+      const a1 = Number(student.assignment1) || 0;
+      const a2 = Number(student.assignment2) || 0;
+      const mt = Number(student.midterm) || 0;
+      const fe = Number(student.final) || 0;
+      return ((a1 + a2 + mt + fe) / 4).toFixed(1);
+    }
+
+    function getScoreClass(score) {
+      return Number(score) >= 60 ? 'score-pass' : 'score-fail';
+    }
+
+    function createScoreText(score) {
+      const span = document.createElement("span");
+      span.textContent = score;
+      span.className = getScoreClass(score);
+      return span;
+    }
+
+    function renderTable(data) {
+      if (!tableBody) {
+        console.error("Table body not found!");
+        return;
+      }
+      tableBody.innerHTML = ""; 
+      data.forEach(student => {
+        const avg = calculateAverage(student);
+        const tr = document.createElement("tr");
+        
+        const cellName = document.createElement("td");
+        cellName.setAttribute("data-label", "Student");
+        cellName.textContent = student.name;
+        tr.appendChild(cellName);
+
+        const cellA1 = document.createElement("td");
+        cellA1.setAttribute("data-label", "Assignment 1");
+        cellA1.appendChild(createScoreText(student.assignment1));
+        tr.appendChild(cellA1);
+
+        const cellA2 = document.createElement("td");
+        cellA2.setAttribute("data-label", "Assignment 2");
+        cellA2.appendChild(createScoreText(student.assignment2));
+        tr.appendChild(cellA2);
+
+        const cellMidterm = document.createElement("td");
+        cellMidterm.setAttribute("data-label", "Midterm");
+        cellMidterm.appendChild(createScoreText(student.midterm));
+        tr.appendChild(cellMidterm);
+
+        const cellFinal = document.createElement("td");
+        cellFinal.setAttribute("data-label", "Final Exam");
+        cellFinal.appendChild(createScoreText(student.final));
+        tr.appendChild(cellFinal);
+
+        const cellAvg = document.createElement("td");
+        cellAvg.setAttribute("data-label", "Average");
+        cellAvg.appendChild(createScoreText(avg));
+        tr.appendChild(cellAvg);
+
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function sortData(data, key, direction) {
+      return [...data].sort((a, b) => {
+        let valA, valB;
+
+        if (key === "average") {
+          valA = parseFloat(calculateAverage(a));
+          valB = parseFloat(calculateAverage(b));
+        } else if (key === "name") {
+          valA = a.name ? a.name.toLowerCase() : ""; 
+          valB = b.name ? b.name.toLowerCase() : "";
+        } else {
+          valA = a[key] !== undefined ? Number(a[key]) : -Infinity; 
+          valB = b[key] !== undefined ? Number(b[key]) : -Infinity;
+        }
+
+        if (typeof valA === "string") {
+          return direction === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        } else {
+          return direction === "asc" ? valA - valB : valB - valA;
+        }
+      });
+    }
+
+    function updateSortArrows() {
+      headers.forEach(th => {
+        const thKey = th.getAttribute("data-sort-key");
+        const arrow = th.querySelector(".sort-arrow");
+        if (!arrow) return;
+
+        th.classList.remove('sort-asc', 'sort-desc'); 
+        if (thKey === sortKey) {
+          arrow.textContent = sortDirection === "asc" ? "▲" : "▼";
+          th.classList.add(sortDirection === "asc" ? 'sort-asc' : 'sort-desc');
+        }
+      });
+    }
+    
+    function filterData(data, query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return data;
+      return data.filter(student => student.name && student.name.toLowerCase().includes(q));
+    }
+
+    function refreshTable() {
+      if (!searchInput) {
+        console.error("Search input not found! Rendering table without search functionality.");
+        let sorted = sortData(students, sortKey, sortDirection);
+        renderTable(sorted);
+        updateSortArrows();
+        return;
+      }
+      let filtered = filterData(students, searchInput.value);
+      let sorted = sortData(filtered, sortKey, sortDirection);
+      renderTable(sorted);
+      updateSortArrows();
+    }
+
+    // Initial render
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', refreshTable);
+    } else {
+        refreshTable();
+    }
+
+    headers.forEach(th => {
+      th.addEventListener("click", () => {
+        const thKey = th.getAttribute("data-sort-key");
+        if (!thKey) return; 
+
+        if (thKey === sortKey) {
+          sortDirection = (sortDirection === "asc") ? "desc" : "asc";
+        } else {
+          sortKey = thKey;
+          sortDirection = "asc";
+        }
+        refreshTable();
+      });
+    });
+
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+          refreshTable();
+        });
+    } else {
+        console.warn("Search input element not found. Search functionality will be disabled.");
+    }
+
+    // Dark mode toggle functionality
+    const modeToggle = document.getElementById('mode-toggle');
+    const htmlElement = document.documentElement;
+
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            htmlElement.classList.add('dark');
+            if(modeToggle) modeToggle.checked = true;
+        } else {
+            htmlElement.classList.remove('dark');
+            if(modeToggle) modeToggle.checked = false;
+        }
+    }
+
+    if (modeToggle) {
+        modeToggle.addEventListener('change', () => {
+            const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            applyTheme('dark');
+        } else {
+            applyTheme('light'); 
+        }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Score</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    html.dark body {
+        background-color: #1e293b; /* slate-800 for dark mode body */
+        color: #f1f5f9; /* slate-100 for dark mode body text */
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6; /* gray-100 for light mode body (default) */
+      color: #1f2937; /* gray-800 for light mode body text (default) */
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Styles for the main content block (table, etc.) */
+    .content-container-student { /* Unique class for this view's main content */
+      max-width: 960px;
+      margin: 2rem auto;
+      background: #ffffff; /* white for light mode */
+      color: #1f2937; /* gray-800 for light mode */
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.1); 
+      padding: 1.5rem 2rem;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+    html.dark .content-container-student {
+      background: #334155; /* slate-700 for dark mode */
+      color: #f1f5f9; /* slate-100 for dark mode */
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.2);
+    }
+    .content-container-student h2 { 
+      color: #111827; /* gray-900 for light mode */
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    html.dark .content-container-student h2 {
+      color: #e2e8f0; /* slate-200 for dark mode */
+    }
+
+    table.score-table { 
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    table.score-table thead {
+      background: #e5e7eb; /* gray-200 for light */
+      transition: background-color 0.3s ease;
+    }
+    html.dark table.score-table thead {
+      background: #475569; /* slate-600 for dark */
+    }
+    table.score-table th, table.score-table td {
+      padding: 0.85rem 1rem; 
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb; /* gray-200 for light */
+      transition: border-color 0.3s ease;
+    }
+    html.dark table.score-table th, html.dark table.score-table td {
+      border-bottom: 1px solid #475569; /* slate-600 for dark */
+    }
+    table.score-table th {
+      font-weight: 600;
+      color: #374151; /* gray-700 for light */
+      user-select: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+    html.dark table.score-table th {
+      color: #e2e8f0; /* slate-200 for dark */
+    }
+    table.score-table th:hover {
+      background: #d1d5db; /* gray-300 for light */
+    }
+    html.dark table.score-table th:hover {
+      background: #525f76; 
+    }
+    table.score-table th .sort-arrow {
+      font-size: 0.8rem; 
+      margin-left: 0.35rem;
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      visibility: hidden; 
+    }
+    table.score-table th.sort-asc .sort-arrow,
+    table.score-table th.sort-desc .sort-arrow {
+      visibility: visible;
+    }
+    table.score-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    table.score-table tbody tr:hover {
+      background: #f3f4f6; /* gray-100 for light */
+    }
+    html.dark table.score-table tbody tr:hover {
+      background: #3e4c5f; 
+    }
+    table.score-table tbody td {
+      color: #374151; /* gray-700 for light */
+      transition: color 0.3s ease;
+    }
+    html.dark table.score-table tbody td {
+      color: #cbd5e1; /* slate-300 for dark */
+    }
+    .score-pass {
+      color: #16a34a; /* green-600 for light */
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    html.dark .score-pass {
+      color: #4ade80; /* green-400 for dark */
+    }
+    .score-fail {
+      color: #dc2626; /* red-600 for light */
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    html.dark .score-fail {
+      color: #f87171; /* red-400 for dark */
+    }
+
+    @media (max-width: 768px) { 
+      .content-container-student { 
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+
+    @media (max-width: 640px) { 
+      table.score-table, table.score-table thead, table.score-table tbody, table.score-table th, table.score-table td, table.score-table tr { 
+        display: block; 
+      }
+      table.score-table thead tr {
+        display: none; 
+      }
+      table.score-table tbody tr {
+        margin-bottom: 1.25rem;
+        background: #ffffff; /* white for light */
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+        border: 1px solid #e5e7eb; /* gray-200 for light */
+      }
+      html.dark table.score-table tbody tr {
+        background: #3e4c5f; 
+        border: 1px solid #475569; 
+      }
+      table.score-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0; 
+        border-bottom: 1px dashed #e5e7eb; /* gray-200 for light */
+        font-size: 0.9rem;
+      }
+      html.dark table.score-table tbody td {
+        border-bottom: 1px dashed #475569; 
+      }
+      table.score-table tbody tr td:last-child {
+        border-bottom: none; 
+      }
+      table.score-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #6b7280; /* gray-500 for light */
+        margin-right: 0.5rem;
+      }
+      html.dark table.score-table tbody td::before {
+        color: #94a3b8; /* slate-400 for dark */
+      }
+    }
+  </style>
+</head>
+<body> 
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white dark:bg-slate-900 border-r dark:border-slate-700 flex flex-col transition-colors duration-300 ease-in-out">
+      <div class="p-4">
+        <h1 class="text-2xl font-bold mb-1 text-blue-600 dark:text-sky-400">TutorIn</h1>
+        <h2 class="text-xs font-semibold text-gray-600 dark:text-slate-400">Indonesia's #1 Mentoring Course</h2>
+      </div>
+      <nav class="px-4 flex-1 space-y-2">
+          <a class="flex items-center p-2 text-gray-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-sky-400 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800" href="dashboard.html">
+            <i class="fas fa-tachometer-alt mr-3 w-5 h-5 text-center text-gray-500 dark:text-slate-400"></i>
+            <span>Dashboard</span>
+          </a>
+      </nav>
+      <div class="p-4 border-t border-gray-200 dark:border-slate-700 transition-colors duration-300 ease-in-out">
+        <div class="p-3 bg-gray-50 dark:bg-slate-800 rounded-lg transition-colors duration-300 ease-in-out">
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Dark Mode</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="mode-toggle" class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-sky-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-slate-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 dark:peer-checked:bg-sky-600"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <div class="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 lg:p-8 bg-gray-100 dark:bg-slate-800 transition-colors duration-300 ease-in-out">
+        <main class="content-container-student">
+            <h2>Your Scores - ST001</h2>
+            <table class="score-table" id="studentScoreTable"> 
+              <thead>
+                <tr>
+                  <th data-sort-key="name">Subject<span class="sort-arrow"></span></th>
+                  <th data-sort-key="assignment1">Assignment 1<span class="sort-arrow"></span></th>
+                  <th data-sort-key="assignment2">Assignment 2<span class="sort-arrow"></span></th>
+                  <th data-sort-key="midterm">Midterm<span class="sort-arrow"></span></th>
+                  <th data-sort-key="final">Final Exam<span class="sort-arrow"></span></th>
+                  <th data-sort-key="average">Average<span class="sort-arrow"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+        </main>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Data for the student's scores (as provided in the HTML structure)
+        // This represents scores for different subjects for ONE student.
+        const studentSubjectScores = [ 
+          { name: "Mathematics", assignment1: 88, assignment2: 92, midterm: 78, final: 85 },
+          { name: "Biology", assignment1: 67, assignment2: 70, midterm: 72, final: 68 },
+          { name: "Indonesian", assignment1: 94, assignment2: 90, midterm: 89, final: 93 },
+          { name: "English", assignment1: 75, assignment2: 80, midterm: 70, final: 72 },
+          { name: "Physics", assignment1: 58, assignment2: 65, midterm: 60, final: 55 },
+          { name: "Chemistry", assignment1: 82, assignment2: 85, midterm: 84, final: 80 },
+          { name: "History", assignment1: 90, assignment2: 94, midterm: 92, final: 97 },
+          { name: "Geography", assignment1: 45, assignment2: 50, midterm: 40, final: 42 }
+        ];
+
+        const scoreTableBody = document.querySelector("#studentScoreTable tbody");
+        const scoreTableHeaders = document.querySelectorAll("#studentScoreTable thead th");
+
+        let currentSortKey = "name"; // Default sort key (Subject)
+        let currentSortDirection = "asc"; // Default sort direction
+
+        function calculateAverage(subjectEntry) {
+          const a1 = Number(subjectEntry.assignment1) || 0;
+          const a2 = Number(subjectEntry.assignment2) || 0;
+          const mt = Number(subjectEntry.midterm) || 0;
+          const fe = Number(subjectEntry.final) || 0;
+          return ((a1 + a2 + mt + fe) / 4).toFixed(1);
+        }
+
+        function getScoreClass(score) {
+          return Number(score) >= 60 ? 'score-pass' : 'score-fail';
+        }
+
+        function createScoreText(score) {
+          const span = document.createElement("span");
+          span.textContent = score;
+          span.className = getScoreClass(score);
+          return span;
+        }
+
+        function renderScoreTable(data) {
+          if (!scoreTableBody) {
+            console.error("Score table body not found (#studentScoreTable tbody)!");
+            return;
+          }
+          scoreTableBody.innerHTML = ""; 
+          data.forEach(subjectEntry => {
+            const avg = calculateAverage(subjectEntry);
+            const tr = document.createElement("tr");
+            
+            const cellSubject = document.createElement("td");
+            cellSubject.setAttribute("data-label", "Subject");
+            cellSubject.textContent = subjectEntry.name; 
+            tr.appendChild(cellSubject);
+
+            const cellA1 = document.createElement("td");
+            cellA1.setAttribute("data-label", "Assignment 1");
+            cellA1.appendChild(createScoreText(subjectEntry.assignment1));
+            tr.appendChild(cellA1);
+
+            const cellA2 = document.createElement("td");
+            cellA2.setAttribute("data-label", "Assignment 2");
+            cellA2.appendChild(createScoreText(subjectEntry.assignment2));
+            tr.appendChild(cellA2);
+
+            const cellMidterm = document.createElement("td");
+            cellMidterm.setAttribute("data-label", "Midterm");
+            cellMidterm.appendChild(createScoreText(subjectEntry.midterm));
+            tr.appendChild(cellMidterm);
+
+            const cellFinal = document.createElement("td");
+            cellFinal.setAttribute("data-label", "Final Exam");
+            cellFinal.appendChild(createScoreText(subjectEntry.final));
+            tr.appendChild(cellFinal);
+
+            const cellAvg = document.createElement("td");
+            cellAvg.setAttribute("data-label", "Average");
+            cellAvg.appendChild(createScoreText(avg));
+            tr.appendChild(cellAvg);
+
+            scoreTableBody.appendChild(tr);
+          });
+        }
+
+        function sortScoreData(data, key, direction) {
+          return [...data].sort((a, b) => {
+            let valA, valB;
+
+            if (key === "average") {
+              valA = parseFloat(calculateAverage(a));
+              valB = parseFloat(calculateAverage(b));
+            } else if (key === "name") { 
+              valA = a.name ? a.name.toLowerCase() : "";
+              valB = b.name ? b.name.toLowerCase() : "";
+            } else {
+              valA = a[key] !== undefined ? Number(a[key]) : -Infinity; 
+              valB = b[key] !== undefined ? Number(b[key]) : -Infinity;
+            }
+
+            if (typeof valA === "string") {
+              return direction === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            } else {
+              return direction === "asc" ? valA - valB : valB - valA;
+            }
+          });
+        }
+
+        function updateScoreSortArrows() {
+          if (!scoreTableHeaders) return;
+          scoreTableHeaders.forEach(th => {
+            const thKey = th.getAttribute("data-sort-key");
+            const arrow = th.querySelector(".sort-arrow");
+            if (!arrow) return;
+
+            th.classList.remove('sort-asc', 'sort-desc'); 
+            if (thKey === currentSortKey) {
+              arrow.textContent = currentSortDirection === "asc" ? "▲" : "▼";
+              th.classList.add(currentSortDirection === "asc" ? 'sort-asc' : 'sort-desc');
+            }
+          });
+        }
+        
+        function refreshScoreTable() {
+          let sortedData = sortScoreData(studentSubjectScores, currentSortKey, currentSortDirection);
+          renderScoreTable(sortedData);
+          updateScoreSortArrows();
+        }
+
+        if (scoreTableHeaders.length > 0) {
+           refreshScoreTable(); // Initial render only if headers are found
+        } else {
+            console.warn("Score table headers not found. Table will not be initialized with sorting.");
+        }
+
+
+        scoreTableHeaders.forEach(th => {
+          th.addEventListener("click", () => {
+            const thKey = th.getAttribute("data-sort-key");
+            if (!thKey) return;
+
+            if (thKey === currentSortKey) {
+              currentSortDirection = (currentSortDirection === "asc") ? "desc" : "asc";
+            } else {
+              currentSortKey = thKey;
+              currentSortDirection = "asc";
+            }
+            refreshScoreTable();
+          });
+        });
+
+        // Dark mode toggle functionality
+        const modeToggle = document.getElementById('mode-toggle');
+        const htmlElement = document.documentElement;
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                htmlElement.classList.add('dark');
+                if(modeToggle) modeToggle.checked = true;
+            } else {
+                htmlElement.classList.remove('dark');
+                if(modeToggle) modeToggle.checked = false;
+            }
+        }
+
+        if (modeToggle) {
+            modeToggle.addEventListener('change', () => {
+                const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                applyTheme(savedTheme);
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light'); 
+            }
+        } else {
+            // Fallback or default theme if toggle is not present
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+        }
+    });
+  </script>
+</body>
+</html>
